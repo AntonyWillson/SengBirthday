@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Seng! 🎉</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+<!-- ================= ENTRY GATE ================= -->
+<div id="gate">
+  <div class="gate-icon">💌</div>
+  <div class="gate-question">Apakah kamu pacarnya Celine, pacar aku?</div>
+  <div class="gate-buttons">
+    <button class="gate-btn gate-btn-yes" id="gateYes">Iya</button>
+    <button class="gate-btn gate-btn-no" id="gateNo">Tidak</button>
+  </div>
+  <div class="gate-hint" id="gateHint"></div>
+</div>
+
+<!-- ================= AUDIO ================= -->
+<!--
+  CARA GANTI LAGU:
+  1. Simpan file lagu di folder yang sama dengan file html ini.
+  2. Beri nama file: lagu.mp3 (atau ganti src="lagu.mp3" di bawah sesuai nama filemu).
+-->
+<audio id="bgMusic" src="NIKI - I LIKE U (Official Music Video).mp3" loop></audio>
+<button id="musicToggle" aria-label="Putar/jeda musik" style="display:none;">🔊</button>
+
+<!-- ================= BEHIND THE SCENES ================= -->
+<button id="btsToggle" aria-label="Lihat behind the scenes" style="display:none;">🎬 Behind the Scenes</button>
+
+<div id="btsModal" class="bts-modal">
+  <div class="bts-modal-card">
+    <button class="bts-close" id="btsClose" aria-label="Tutup">✕</button>
+    <div class="bts-modal-header">
+      <span class="bts-eyebrow">rahasia kecil</span>
+      <h3>Behind the Scenes 🤫</h3>
+      <p class="bts-desc">Tadaaa ini ak kerjain waktu call bareng u seng hihi</p>
+    </div>
+    <!--
+      CARA GANTI FOTO BEHIND THE SCENES:
+      1. Simpan foto di folder "foto-bts" (satu folder dengan file html ini).
+      2. Beri nama file sesuai yang dipakai di script.js (bagian btsPhotos),
+         atau ganti nama file di script.js supaya cocok dengan foto kamu.
+      3. Ganti tulisan "caption" di script.js sesuai keterangan tiap foto.
+      Grid foto di bawah ini otomatis dibuat lewat script.js, tidak perlu diedit di sini.
+    -->
+    <div class="bts-grid" id="btsGrid"></div>
+  </div>
+</div>
+
+<!-- ================= PHOTO POPUP (muncul setelah jawab "Iya") ================= -->
+<div id="photoModal" class="photo-modal">
+  <div class="photo-modal-card">
+    <button class="photo-close" id="photoClose" aria-label="Tutup">✕</button>
+    <div class="photo-modal-header">
+      <span class="photo-eyebrow">buktiin dong</span>
+      <h3>Kalau emang iya... 📸</h3>
+      <p class="photo-desc">Cobaa foto dluu sengg</p>
+    </div>
+
+    <div class="photo-stage" id="photoStage">
+      <video id="photoVideo" autoplay playsinline muted></video>
+      <img id="photoResult" alt="Hasil foto kamu" style="display:none;">
+      <canvas id="photoCanvas" style="display:none;"></canvas>
+    </div>
+
+    <p class="photo-error" id="photoError" style="display:none;"></p>
+
+    <div class="photo-actions" id="photoActionsCamera">
+      <button class="photo-btn photo-btn-primary" id="photoCaptureBtn">📸 Ambil Foto</button>
+    </div>
+    <p class="photo-send-status" id="photoSendStatus" style="display:none;"></p>
+
+    <div class="photo-actions" id="photoActionsResult" style="display:none;">
+      <button class="photo-btn" id="photoRetakeBtn">🔁 Ulangi</button>
+      <button class="photo-btn photo-btn-primary" id="photoSaveBtn">💌 Kirim</button>
+    </div>
+
+    <!-- Muncul kalau kamera browser tidak bisa diakses langsung -->
+    <label class="photo-fallback" id="photoFallbackLabel" style="display:none;">
+      📷 Buka Kamera
+      <input type="file" accept="image/*" capture="user" id="photoFileInput" hidden>
+    </label>
+  </div>
+</div>
+
+<div id="site" style="display:none;">
+
+<nav class="dots" aria-hidden="true">
+  <a href="#hero"></a>
+  <a href="#cake-section"></a>
+  <a href="#balloon-section"></a>
+  <a href="#gallery-section"></a>
+  <a href="#letter-section"></a>
+  <a href="#finale-section"></a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section id="hero">
+  <div class="balloon-bg">
+    <span class="float-shape" style="top:12%; left:8%; font-size:2.4rem;">🎈</span>
+    <span class="float-shape" style="top:20%; right:10%; font-size:2rem; animation-delay:-3s;">✨</span>
+    <span class="float-shape" style="bottom:16%; left:14%; font-size:2.2rem; animation-delay:-5s;">🎈</span>
+    <span class="float-shape" style="bottom:10%; right:14%; font-size:1.8rem; animation-delay:-2s;">💖</span>
+  </div>
+  <span class="eyebrow">a little something for you</span>
+  <h1 class="hero-title">Happy Birthday<span>Seng 🎂</span></h1>
+  <p class="hero-sub">I made you a whole tiny website because a text felt way too small for how much I like you. Scroll down — there are surprises to play with.</p>
+  <div class="scroll-cue">
+    <span>keep scrolling</span>
+    <span class="arrow">↓</span>
+  </div>
+</section>
+
+<!-- ================= CAKE / CANDLES ================= -->
+<section id="cake-section">
+  <div class="section-eyebrow">surprise one</div>
+  <h2 class="section-title">Make a wish 🕯️</h2>
+  <p class="section-hint">Tap each candle to blow it out.</p>
+
+  <div class="cake-wrap">
+    <div class="candles" id="candles">
+      <div class="candle" data-candle><div class="flame"></div><div class="puff"></div></div>
+      <div class="candle" data-candle><div class="flame"></div><div class="puff"></div></div>
+      <div class="candle" data-candle><div class="flame"></div><div class="puff"></div></div>
+      <div class="candle" data-candle><div class="flame"></div><div class="puff"></div></div>
+      <div class="candle" data-candle><div class="flame"></div><div class="puff"></div></div>
+    </div>
+
+    <svg class="cake-svg" width="260" height="150" viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
+      <rect x="30" y="90" width="200" height="50" rx="10" fill="#FF6FA0"/>
+      <rect x="30" y="90" width="200" height="14" rx="7" fill="#ffffff"/>
+      <rect x="45" y="50" width="170" height="46" rx="10" fill="#A98BFF"/>
+      <rect x="45" y="50" width="170" height="12" rx="6" fill="#ffffff"/>
+      <circle cx="70" cy="90" r="6" fill="#FFC94D"/>
+      <circle cx="110" cy="90" r="6" fill="#4FD9AC"/>
+      <circle cx="150" cy="90" r="6" fill="#FFC94D"/>
+      <circle cx="190" cy="90" r="6" fill="#4FD9AC"/>
+    </svg>
+  </div>
+
+  <!-- EDIT ME: change the wish message shown after all candles are blown out -->
+  <div class="wish-note" id="wishNote">Hello Seng for this year birthday, ak cuman bisa bikin website ini nanti pas u pulang kita langsung makan - makan yaa. 💕</div>
+</section>
+
+<!-- ================= BALLOON POP GAME ================= -->
+<section id="balloon-section">
+  <div class="section-eyebrow">surprise two</div>
+  <h2 class="section-title">Pop a balloon 🎈</h2>
+  <p class="section-hint">Each one is hiding a reason I like you. Tap them all.</p>
+
+  <!-- EDIT ME: swap in your own inside jokes / reasons — one per balloon (edit in script.js) -->
+  <div class="balloon-grid" id="balloonGrid"></div>
+</section>
+
+<!-- ================= MEMORIES GALLERY ================= -->
+<section id="gallery-section">
+  <div class="section-eyebrow">surprise three</div>
+  <h2 class="section-title">Our little archive 📸</h2>
+  <p class="section-hint">A few of my favorite moments with you.</p>
+
+  
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="polaroid">
+      <div class="polaroid-frame"><img src="/Foto/IMG_2718.JPG" alt="Kenangan 1"></div>
+      <!-- <div class="polaroid-caption">tulis keterangan di sini</div> -->
+    </div>
+    <div class="polaroid">
+      <div class="polaroid-frame"><img src="/Foto/IMG_2688.JPG" alt="Kenangan 2"></div>
+      <!-- <div class="polaroid-caption">tulis keterangan di sini</div> -->
+    </div>
+    <div class="polaroid">
+      <div class="polaroid-frame"><img src="/Foto/IMG_2628.JPG" alt="Kenangan 3"></div>
+      <!-- <div class="polaroid-caption">tulis keterangan di sini</div> -->
+    </div>
+    <div class="polaroid">
+      <div class="polaroid-frame"><img src="/Foto/IMG_2509.JPG" alt="Kenangan 4"></div>
+      <!-- <div class="polaroid-caption">tulis keterangan di sini</div> -->
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOVE LETTER ================= -->
+<section id="letter-section">
+  <div class="section-eyebrow">surprise three</div>
+  <h2 class="section-title">Open the envelope 💌</h2>
+
+  <div class="envelope" id="envelope">
+    <div class="env-body"></div>
+    <div class="env-flap"></div>
+    <div class="env-seal">💗</div>
+  </div>
+  <div class="env-tap-hint">tap the envelope</div>
+</section>
+
+<!-- ================= LETTER MODAL ================= -->
+<!-- Muncul saat amplop di klik: layar belakang blur, surat tampil hampir satu layar (tidak full). -->
+<div id="letterModal" class="letter-modal">
+  <div class="letter-modal-card">
+    <button class="letter-close" id="letterClose" aria-label="Tutup surat">✕</button>
+    <div class="letter-paper-full">
+      Hey Seng,<br><br>
+      I know this is a bit much for a birthday message, but you kind of deserve a bit much.
+      <br><br>I hope this year brings you joy and happiness. After u balik ke indoo kitaa langsung makan makan yaa senggg hihihihi<br><br>
+      <strong>Happy birthday, Seng.</strong> I love you a lot. 🎂💕
+    </div>
+  </div>
+</div>
+
+<!-- ================= FINALE ================= -->
+<section id="finale-section">
+  <div class="section-eyebrow">last one, promise</div>
+  <h2 class="section-title">One more surprise</h2>
+  <button class="finale-btn" id="finaleBtn">Tap here 🎉</button>
+  <div class="finale-message" id="finaleMessage">I love you, Celine 💕</div>
+  <div class="finale-sub" id="finaleSub">happy birthday, my favorite person.</div>
+</section>
+
+<footer>made with 💕 for Celine's birthday</footer>
+
+</div><!-- /#site -->
+
+<script src="script.js"></script>
+
+</body>
+</html>
